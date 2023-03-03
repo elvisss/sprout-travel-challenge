@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <h1>Flights List</h1>
+    <h1>Sprout Travel</h1>
 
-    <!-- <FlightItineraries :itineraries="itineraries" /> -->
     <FlightItineraries :itineraries="filteredItineraries" />
 
     <!-- Pagination -->
     <PaginationNumber
+      v-if="!isLoading"
       :total-pages="totalPages"
       :current-page="currentPage"
       @page-changed="setPage"
