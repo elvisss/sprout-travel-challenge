@@ -7,7 +7,6 @@ import { useLoadingStore } from '@/stores/loading'
 import { useErrorStore } from '@/stores/error'
 
 const useFlights = () => {
-	console.log('init')
   const flihgtsStore = useFlightsStore()
   const loadingStore = useLoadingStore()
   const errorStore = useErrorStore()
@@ -18,7 +17,6 @@ const useFlights = () => {
 
   const getItineraries = async (): Promise<void> => {
 		loadingStore.setLoading(true)
-		console.log('loading')
     /* await new Promise(resolve => {
 			setTimeout(() => resolve(true), 1500)
 		}) */

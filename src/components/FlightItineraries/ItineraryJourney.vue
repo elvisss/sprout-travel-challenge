@@ -7,26 +7,24 @@
       :title='airlineItem.title'
     />
     <div class="flex-grow-1 d-flex justify-content-between">
-      <div class="journey-origin">
-        <p class="fw-bold m-0">
-          {{ journey.originPlace.code }}
-        </p>
-        <span>{{ journey.departureDateTime }}</span>
-      </div>
+      <ItineraryDetail
+        :title='journey.originPlace.code'
+        :direction="'left'"
+        :date='journey.departureDateTime'
+      />
       <div class="journey-detail text-center">
         <div class="journey-airline mb-2">
           {{ airlineItem.title }}
         </div>
         <div>
-          <span>{{ journey.duration }} - {{ hasScales ? 'with scales' : 'nonstop' }}</span>
+          <span>{{ journeyDuration }} - {{ hasScales ? 'with scales' : 'nonstop' }}</span>
         </div>
       </div>
-      <div class="journey-destination text-end">
-        <p class="fw-bold m-0">
-          {{ journey.destinationPlace.code }}
-        </p>
-        <span>{{ journey.arrivalDateTime }}</span>
-      </div>
+      <ItineraryDetail
+        :title='journey.destinationPlace.code'
+        :direction="'right'"
+        :date='journey.arrivalDateTime'
+      />
     </div>
   </div>
 </template>
@@ -35,6 +33,8 @@
 import { toRef, computed } from 'vue'
 import type { Journey } from '@/interfaces'
 import { Airline } from '@/interfaces';
+import ItineraryDetail from './ItineraryDetail.vue';
+import { numToTime } from '@/utils';
 
 interface Props {
   journey: Journey
@@ -58,6 +58,10 @@ const airlineItem = computed<AirlineItem>(() => {
 
 const hasScales = computed<boolean>(() => {
   return (journey.value.layovers.all.length || journey.value.layovers.short.length) > 0
+})
+
+const journeyDuration = computed<string>(() => {
+  return numToTime(journey.value.duration)
 })
 </script>
 

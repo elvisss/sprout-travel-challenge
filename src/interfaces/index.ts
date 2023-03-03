@@ -49,8 +49,8 @@ export interface Layovers {
 export interface Segment {
   originPlace: NPlace
   destinationPlace: NPlace
-  departureDateTime: Date
-  arrivalDateTime: Date
+  departureDateTime: string
+  arrivalDateTime: string
   marketingAirline: string
   marketingFlightNumber: string
   operatingAirline: string
@@ -58,8 +58,8 @@ export interface Segment {
   duration: number
   fareCategory: CabinClass
   fareBasis: string
-  departureDateTimeWithTimeZone: Date
-  arrivalDateTimeWithTimeZone: Date
+  departureDateTimeWithTimeZone: string
+  arrivalDateTimeWithTimeZone: string
 	fareClasses?: string
 	fareFamily?: string
 }
