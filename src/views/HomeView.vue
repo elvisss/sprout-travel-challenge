@@ -2,7 +2,8 @@
   <div class="container">
     <h1>Flights List</h1>
 
-    <FlightItineraries :itineraries="itineraries" />
+    <!-- <FlightItineraries :itineraries="itineraries" /> -->
+    <FlightItineraries :itineraries="filteredItineraries" />
 
     <!-- Pagination -->
     <PaginationNumber
@@ -22,5 +23,5 @@ import PaginationNumber from '@/components/PaginationNumber.vue'
 import LoadingModal from '@/components/LoadingModal.vue'
 import useFlights from '@/composables/useFlights';
 
-const { isLoading, itineraries, totalPages, currentPage, setPage } = useFlights()
+const { isLoading, filteredItineraries, totalPages, currentPage, setPage } = useFlights()
 </script>

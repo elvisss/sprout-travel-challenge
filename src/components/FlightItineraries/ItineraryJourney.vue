@@ -2,9 +2,9 @@
   <div :class="['bg-white p-4 d-flex justify-content-between', isEven ? 'mb-3' : '']">
     <img
       class="journey-image me-5"
-      :src="airlineItem.source"
-      :alt='airlineItem.title'
-      :title='airlineItem.title'
+      :src="airline.image"
+      :alt='airline.name'
+      :title='airline.name'
     />
     <div class="flex-grow-1 d-flex justify-content-between">
       <ItineraryDetail
@@ -14,10 +14,10 @@
       />
       <div class="journey-detail text-center">
         <div class="journey-airline mb-2">
-          {{ airlineItem.title }}
+          {{ airline.name }}
         </div>
         <div>
-          <span>{{ journeyDuration }} - {{ hasScales ? 'with scales' : 'nonstop' }}</span>
+          <span>{{ journeyDuration }} - {{ totalScales > 0 ? `${totalScales} scales` : 'nonstop' }}</span>
         </div>
       </div>
       <ItineraryDetail
@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { toRef, computed } from 'vue'
 import type { Journey } from '@/interfaces'
-import { Airline } from '@/interfaces';
+import { Airline as AirlineEnum } from '@/interfaces';
 import ItineraryDetail from './ItineraryDetail.vue';
 import { numToTime } from '@/utils';
 
@@ -41,23 +41,25 @@ interface Props {
   isEven: boolean
 }
 
-interface AirlineItem {
-  source: string
-  title: any
+interface Airline {
+  image: string
+  name: string
 }
 
 const props = defineProps<Props>()
 const journey = toRef(props, 'journey')
 
-const airlineItem = computed<AirlineItem>(() => {
+const airline = computed<Airline>(() => {
+  const marketingAirline = journey.value.segments[0].marketingAirline || journey.value.segments[0].operatingAirline
   return {
-    source: `/logos/${ journey.value.segments[0].marketingAirline }.jpg`,
-    title: (Airline as any)[journey.value.segments[0].marketingAirline]
+    image: `/logos/${ marketingAirline }.jpg`,
+    name: (AirlineEnum as any)[marketingAirline]
   }
 })
 
-const hasScales = computed<boolean>(() => {
-  return (journey.value.layovers.all.length || journey.value.layovers.short.length) > 0
+// TODO: validate if we need to plus 'all' and 'short'
+const totalScales = computed<number>(() => {
+  return journey.value.layovers.all.length
 })
 
 const journeyDuration = computed<string>(() => {
@@ -85,7 +87,7 @@ const journeyDuration = computed<string>(() => {
     left: 0;
     right: 0;
     height: 4px;
-    bottom: -8px;
+    bottom: -6px;
     border-radius: 2px;
     background-color: #cfcfcf;
   }

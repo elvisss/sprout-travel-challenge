@@ -1,6 +1,15 @@
 <template>
-  <div>
+  <div class="mt-4 d-flex justify-content-center">
     <button
+      type="button"
+      :disabled="currentPage === 1"
+      @click="setPage(1)"
+    >
+      First
+    </button>
+
+    <button
+      type="button"
       :disabled="currentPage === 1"
       @click="setPage(currentPage - 1)"
     >
@@ -8,25 +17,35 @@
     </button>
 
     <button
-      v-for="number of totalPages"
-      :key="number"
-      @click="setPage(number)"
-      :class="{ active: number === currentPage }"
+      v-for="page of pages"
+      :key="page.name"
+      @click="setPage(page.name)"
+      :disabled="page.isDisabled"
+      :class="{ active: currentPage === page.name }"
     >
-      {{ number }}
+      {{ page.name }}
     </button>
 
     <button
+      type="button"
       :disabled="currentPage === totalPages"
       @click="setPage(currentPage + 1)"
     >
       Next
     </button>
+
+    <button
+      type="button"
+      :disabled="currentPage === totalPages"
+      @click="setPage(totalPages)"
+    >
+      Last
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { toRef } from 'vue';
+import { toRef, computed } from 'vue'
 
 interface Props {
   totalPages: number
@@ -42,13 +61,51 @@ const emit = defineEmits(['pageChanged'])
 const setPage = (page: number) => {
   emit('pageChanged', page)
 }
+
+const maxVisibleButtons = 5
+
+const startPage = computed<number>(() => {
+  if (currentPage.value === 1) {
+    return 1
+  }
+
+  if (currentPage.value === totalPages.value) {
+    const start = totalPages.value - (maxVisibleButtons - 1)
+
+    if (start === 0) {
+      return 1
+    } else {
+      return start
+    }
+  }
+
+  return currentPage.value - 1
+})
+
+interface Page {
+  name: number
+  isDisabled: boolean
+}
+
+const pages = computed<Page[]>(() => {
+  const range: Page[] = []
+
+  for (
+    let i = startPage.value;
+    i <= Math.min(startPage.value + maxVisibleButtons - 1, totalPages.value);
+    i++
+  ) {
+    range.push({
+      name: i,
+      isDisabled: i === currentPage.value,
+    })
+  }
+
+  return range
+})
 </script>
 
 <style scoped>
-div {
-  margin-top: 10px;
-}
-
 button {
   background-color: transparent;
   border-radius: 5px;
@@ -56,11 +113,11 @@ button {
   color: var(--color-text);
   margin-right: 5px;
   padding: 10px;
-  transition: all .5s;
+  transition: all 0.2s;
 }
 
 button:hover {
-  background-color: hsla(160, 100%, 37%, 0.2);
+  background-color: #42d392;
 }
 
 button:disabled,
@@ -73,6 +130,6 @@ button.disabled {
 }
 
 button.active {
-  background-color: hsla(160, 100%, 37%, 0.2);
+  background-color: #42d392;
 }
 </style>

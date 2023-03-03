@@ -11,7 +11,7 @@ const useFlights = () => {
   const loadingStore = useLoadingStore()
   const errorStore = useErrorStore()
 
-  const { itineraries, currentPage, totalPages } = storeToRefs(flihgtsStore)
+  const { filteredItineraries, currentPage, totalPages } = storeToRefs(flihgtsStore)
   const { isLoading } = storeToRefs(loadingStore)
   const { isError } = storeToRefs(errorStore)
 
@@ -38,7 +38,7 @@ const useFlights = () => {
 
   return {
     // properties
-    itineraries,
+    filteredItineraries,
 
     isLoading,
     isError,
