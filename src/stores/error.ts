@@ -2,14 +2,14 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useErrorStore = defineStore('error', () => {
-  const isError = ref(false)
+  const isError = ref('')
 
   return {
     // state
     isError,
 
     // actions
-    setError(error: boolean) {
+    setError(error: string) {
       isError.value = error
     }
   }
