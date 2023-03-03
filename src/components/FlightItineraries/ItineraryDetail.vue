@@ -1,9 +1,9 @@
 <template>
-  <div :class="direction === 'left' ? 'text-start' : 'text-end'">
-    <p class="fw-bold m-0">
+  <div class="itinerary-detail" :class="direction === 'left' ? 'text-start' : 'text-end'">
+    <p class="fw-bold mb-0">
       {{ title }}
     </p>
-    <span>{{ formattedDate }}</span>
+    <p class="mb-0">{{ formattedDate }}</p>
   </div>
 </template>
 
@@ -28,4 +28,8 @@ const formattedDate = computed<string>(() => {
 </script>
 
 <style scoped>
+.itinerary-detail {
+  min-width: 200px;
+  line-height: 25px;
+}
 </style>

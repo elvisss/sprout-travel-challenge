@@ -1,5 +1,5 @@
 <template>
-  <div :class="['bg-white p-4 d-flex justify-content-between', isEven ? 'mb-3' : '']">
+  <div :class="['bg-white p-3 d-flex justify-content-between', isEven ? 'mb-3' : '']">
     <img
       class="journey-image me-5"
       :src="airline.image"
@@ -13,12 +13,12 @@
         :date='journey.departureDateTime'
       />
       <div class="journey-detail text-center">
-        <div class="journey-airline mb-2">
+        <p class="journey-airline lh-sm mb-2">
           {{ airline.name }}
-        </div>
-        <div>
+        </p>
+        <p class="mb-0 lh-sm">
           <span>{{ journeyDuration }} - {{ totalScales > 0 ? `${totalScales} scales` : 'nonstop' }}</span>
-        </div>
+        </p>
       </div>
       <ItineraryDetail
         :title='journey.destinationPlace.code'
